@@ -1,0 +1,9 @@
+pluginManagement {
+    includeBuild 'global-ignore-nfs-plugins'
+}
+
+plugins {
+    id 'com.example.ignore-nfs-files'
+}
+
+rootProject.name = 'global-ignore-nfs-files'

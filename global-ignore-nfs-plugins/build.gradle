@@ -1,0 +1,12 @@
+plugins {
+    id 'java-gradle-plugin'
+}
+
+gradlePlugin {
+    plugins {
+        ignoreNfs {
+            id = 'com.example.ignore-nfs-files'
+            implementationClass = 'com.example.GlobalNfsIgnorePlugin'
+        }
+    }
+}

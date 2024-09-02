@@ -1,0 +1,43 @@
+import java.nio.file.Files
+import java.nio.file.attribute.FileAttribute
+import java.nio.file.attribute.PosixFilePermission
+import java.nio.file.attribute.PosixFilePermissions
+
+@CacheableTask
+abstract class MyTask extends DefaultTask {
+    @InputFiles
+    @PathSensitive(PathSensitivity.RELATIVE)
+    abstract ConfigurableFileCollection getSource();
+
+    @OutputDirectory
+    abstract DirectoryProperty getOutputDir();
+
+    @TaskAction
+    private void doAction() {
+        Set<PosixFilePermission> ownerWritable = PosixFilePermissions.fromString("---------");
+        FileAttribute<?> permissions = PosixFilePermissions.asFileAttribute(ownerWritable);
+
+
+        getOutputDir().asFile.get().toPath().resolve('.nfs-132423432').with {
+            if (Files.notExists(it)) {
+                Files.createFile(it, permissions)
+            }
+        }
+        getOutputDir().asFile.get().toPath().resolve('.nfs-199845839').with {
+            if (Files.notExists(it)) {
+                Files.createFile(it, permissions)
+            }
+        }
+
+        getOutputDir().asFile.get().toPath().resolve('main.o').with {
+            if (Files.notExists(it)) {
+                Files.createFile(it);
+            }
+        }
+    }
+}
+
+tasks.register('compile', MyTask) {
+    source.from('src/foo.c')
+    outputDir = layout.buildDirectory.dir('obj/main')
+}
